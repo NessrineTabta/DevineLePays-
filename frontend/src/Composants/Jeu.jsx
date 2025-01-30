@@ -60,7 +60,7 @@ const Jeu = () => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "20px" }}>
-      <h2>GeoGuessr Ultra Rapide 🚀</h2>
+      <h2>Jeu Interactif FIND A COUNTRY 🚀</h2>
 
       {/* Image 360° Mapillary */}
       {imageId ? (
