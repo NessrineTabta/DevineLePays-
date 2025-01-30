@@ -5,7 +5,6 @@ import { auth, googleProvider, facebookProvider, db } from '../Backend/Firebase'
 import { signInWithPopup } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import '../Css/Authentification.css'; // Importation du fichier CSS
-
 const Authentification = () => {
   const navigate = useNavigate();
   const [isRegistering, setIsRegistering] = useState(true);
@@ -71,100 +70,102 @@ const Authentification = () => {
 
   return (
     <div className="container">
-      <h4>{isRegistering ? 'S\'inscrire' : 'Se connecter'}</h4>
-      {error && <div className="alert alert-danger">{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div className="mb-2">
-          <label>Email</label>
-          <input
-            type="email"
-            className="form-control"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-2">
-          <label>Mot de passe</label>
-          <input
-            type="password"
-            className="form-control"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {isRegistering && (
-          <>
-            <div className="mb-2">
-              <label>Nom</label>
-              <input
-                type="text"
-                className="form-control"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-2">
-              <label>Prénom</label>
-              <input
-                type="text"
-                className="form-control"
-                value={prenom}
-                onChange={(e) => setPrenom(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-2">
-              <label>Téléphone</label>
-              <input
-                type="text"
-                className="form-control"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-2">
-              <label>Adresse</label>
-              <input
-                type="text"
-                className="form-control"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                required
-              />
-            </div>
-          </>
-        )}
-        <button
-          type="submit"
-          className="btn btn-primary"
-        >
-          {isRegistering ? 'S\'inscrire' : 'Se connecter'}
-        </button>
+      <div className="form-container">
+        <h5>{isRegistering ? 'S\'inscrire' : 'Se connecter'}</h5>
+        {error && <div className="alert alert-danger">{error}</div>}
+        <form onSubmit={handleSubmit}>
+          <div className="mb-2">
+            <label>Email</label>
+            <input
+              type="email"
+              className="form-control"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-2">
+            <label>Mot de passe</label>
+            <input
+              type="password"
+              className="form-control"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          {isRegistering && (
+            <>
+              <div className="mb-2">
+                <label>Nom</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <label>Prénom</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={prenom}
+                  onChange={(e) => setPrenom(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <label>Téléphone</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <label>Adresse</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  required
+                />
+              </div>
+            </>
+          )}
+          <button
+            type="submit"
+            className="btn btn-primary"
+          >
+            {isRegistering ? 'S\'inscrire' : 'Se connecter'}
+          </button>
 
-        <button
-          type="button"
-          onClick={() => setIsRegistering(!isRegistering)}
-        >
-          {isRegistering ? 'Déjà inscrit ? Se connecter' : 'Pas encore inscrit ? S\'inscrire'}
-        </button>
-      </form>
-      <div className="social-login-buttons">
-        <button
-          className="btn btn-danger"
-          onClick={handleGoogleLogin}
-        >
-          Se connecter avec Google
-        </button>
-        <button
-          className="btn btn-primary"
-          onClick={handleFacebookLogin}
-        >
-          Se connecter avec Facebook
-        </button>
+          <button
+            type="button"
+            onClick={() => setIsRegistering(!isRegistering)}
+          >
+            {isRegistering ? 'Déjà inscrit ? Se connecter' : 'Pas encore inscrit ? S\'inscrire'}
+          </button>
+        </form>
+        <div className="social-login-buttons">
+          <button
+            className="btn btn-danger"
+            onClick={handleGoogleLogin}
+          >
+            Se connecter avec Google
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={handleFacebookLogin}
+          >
+            Se connecter avec Facebook
+          </button>
+        </div>
       </div>
     </div>
   );

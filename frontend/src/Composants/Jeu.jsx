@@ -68,7 +68,7 @@ const Jeu = () => {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "-10px" }}>
+    <div style={{ textAlign: "center", marginTop: "0px" }}>
       <h2>Jeu Interactif FIND A COUNTRY 🚀</h2>
 
       <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
