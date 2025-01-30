@@ -37,7 +37,7 @@ const Jeu = () => {
 
   useEffect(() => {
     // Initialisation rapide de la carte OpenStreetMap
-    const map = L.map("map").setView([20, 0], 2);
+    const map = L.map("map").setView([20, 0], 3);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
     }).addTo(map);
