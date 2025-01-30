@@ -9,18 +9,27 @@ const Jeu = () => {
   const [result, setResult] = useState(null);
   const accessToken = "MLY|9508916365807424|c0a1ab299e693a5c0d232d1d43318f9d";
 
+  // Liste des pays pour la génération aléatoire
+  const countries = [
+    { name: "France", bbox: "2.3522,48.8566,2.3622,48.8666" }, // Paris
+    { name: "USA", bbox: "-74.0060,40.7128,-73.9450,40.7328" }, // New York City
+    { name: "Japan", bbox: "139.6917,35.6895,139.7017,35.6995" }, // Tokyo
+    { name: "India", bbox: "77.2090,28.6139,77.2190,28.6239" }, // New Delhi
+    { name: "Brazil", bbox: "-46.6333,-23.5505,-46.6233,-23.5405" }, // São Paulo
+  ];
+
+  const randomCountry = countries[Math.floor(Math.random() * countries.length)];
+
   useEffect(() => {
-    // Utilisation de la route rapide avec bbox
-    const bbox = "2.3522,48.8566,2.3622,48.8666"; // Paris
-    const apiUrl = `https://graph.mapillary.com/images?access_token=${accessToken}&fields=id&bbox=${bbox}&limit=1`;
+    // Utilisation de la route rapide avec bbox pour un pays aléatoire
+    const apiUrl = `https://graph.mapillary.com/images?access_token=${accessToken}&fields=id&bbox=${randomCountry.bbox}&limit=1`;
 
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
         if (data.data && data.data.length > 0) {
           setImageId(data.data[0].id);
-          // Pas besoin de coordonnées, on prend directement Paris comme pays
-          setImageCountry("France");
+          setImageCountry(randomCountry.name); // Pays aléatoire sélectionné
         }
       })
       .catch((error) => console.error("Erreur de chargement :", error));
@@ -62,27 +71,37 @@ const Jeu = () => {
     <div style={{ textAlign: "center", marginTop: "20px" }}>
       <h2>Jeu Interactif FIND A COUNTRY 🚀</h2>
 
-      {/* Image 360° Mapillary */}
-      {imageId ? (
-        <iframe
-          src={`https://www.mapillary.com/embed?image_key=${imageId}&style=photo`}
-          width="800"
-          height="500"
-          frameBorder="0"
-          allowFullScreen
-        ></iframe>
-      ) : (
-        <p>Chargement de l'image...</p>
-      )}
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
+        {/* Carte à gauche */}
+        <div style={{ width: "50%", paddingRight: "20px" }}>
+          <div id="map" style={{ width: "100%", height: "500px" }}></div>
+        </div>
 
-      <h3>📍 Cliquez sur un pays :</h3>
-      <div id="map" style={{ width: "800px", height: "400px", margin: "0 auto" }}></div>
+        {/* Mapillary à droite */}
+        <div style={{ width: "50%" }}>
+          {/* Image 360° Mapillary */}
+          {imageId ? (
+            <iframe
+              src={`https://www.mapillary.com/embed?image_key=${imageId}&style=photo`}
+              width="800"
+              height="500"
+              frameBorder="0"
+              allowFullScreen
+            ></iframe>
+          ) : (
+            <p>Chargement de l'image...</p>
+          )}
+        </div>
+      </div>
 
       {/* Affichage du pays sélectionné */}
       {selectedCountry && <p>🌍 Pays sélectionné : {selectedCountry}</p>}
 
       {/* Vérification de la réponse */}
-      <button onClick={checkAnswer} style={{ marginTop: "10px", padding: "10px", fontSize: "16px" }}>
+      <button
+        onClick={checkAnswer}
+        style={{ marginTop: "10px", padding: "10px", fontSize: "16px" }}
+      >
         Vérifier
       </button>
 
