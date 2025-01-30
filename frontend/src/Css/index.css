@@ -11,3 +11,50 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* styles.css */
+
+/* Navbar Styling */
+.navbar-menu {
+  background-color: #28a745; /* Green background */
+  padding: 0.5rem 1rem; /* Réduire le padding pour diminuer la hauteur */
+}
+
+/* Navbar start list */
+.navbar-start {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%; /* S'assurer que la navbar prend toute la hauteur disponible */
+}
+
+/* Navbar item styling */
+.navbar-item {
+  color: white; /* White text */
+  text-decoration: none;
+  font-size: 1.2rem;
+  margin-right: 1rem;
+  padding: 0.3rem 0; /* Ajouter du padding vertical plus petit */
+}
+
+/* Hover effect on navbar items */
+.navbar-item:hover {
+  text-decoration: underline;
+}
+
+/* Button styling inside the navbar */
+button.navbar-item {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0.3rem 0; /* Réduire le padding pour réduire la hauteur */
+}
+
+button.navbar-item:hover {
+  text-decoration: underline;
+}

@@ -68,7 +68,7 @@ const Jeu = () => {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "20px" }}>
+    <div style={{ textAlign: "center", marginTop: "-10px" }}>
       <h2>Jeu Interactif FIND A COUNTRY 🚀</h2>
 
       <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
@@ -99,11 +99,21 @@ const Jeu = () => {
 
       {/* Vérification de la réponse */}
       <button
-        onClick={checkAnswer}
-        style={{ marginTop: "10px", padding: "10px", fontSize: "16px" }}
-      >
-        Vérifier
-      </button>
+  onClick={checkAnswer}
+  style={{
+    marginTop: "0px",
+    padding: "5px",
+    fontSize: "16px",
+    width: "auto", // Empêche le bouton de prendre toute la largeur
+    maxWidth: "200px", // Vous pouvez ajuster cette valeur selon votre besoin
+    marginLeft: "auto", // Centre le bouton horizontalement
+    marginRight: "auto", // Centre le bouton horizontalement
+    display: "block", // Pour le centrage avec margin auto
+  }}
+>
+  Vérifier
+</button>
+
 
       {/* Résultat */}
       {result && <h3>{result}</h3>}
