@@ -1,94 +1,24 @@
-.jeu-container {
+/* App.css */
+.App {
   text-align: center;
-  font-family: "Poppins", sans-serif;
-  background: #1a1a2e;
-  color: #ffffff;
-  padding: 20px;
 }
 
-.jeu-title {
-  font-size: 32px;
-  font-weight: bold;
-  margin: 20px 0;
-  text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
-}
-
-/* Video Container */
-.jeu-video-container {
-  position: relative;
-  width: 90%;
-  max-width: 1200px;
-  height: 600px;
-  margin: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
-  overflow: hidden;
-}
-
-/* Mapillary Video */
-.jeu-video {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-/* Carte */
-.jeu-map {
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 2px solid white;
-  background: rgba(255, 255, 255, 0.9);
-  transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
-  z-index: 10;
-}
-
-.jeu-map-content {
-  width: 100%;
-  height: 100%;
-}
-
-/* Boutons de zoom */
-.jeu-map-controls {
-  position: absolute;
-  top: 5px;
-  left: 50%;
-  transform: translateX(-50%);
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
   display: flex;
-  gap: 8px;
-}
-
-.jeu-map-button {
-  background: #3498db;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
   color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 8px 14px;
-  transition: 0.3s;
 }
 
-.jeu-map-button:hover {
-  background: #2980b9;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
 
-/* Bouton Vérifier */
-.jeu-button {
-  margin-top: 20px;
-  padding: 12px 30px;
-  font-size: 18px;
-  font-weight: bold;
-  background-color: #2ecc71;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: 0.3s;
-}
-
-.jeu-button:hover {
-  background-color: #27ae60;
+.App-link {
+  color: #61dafb;
 }
