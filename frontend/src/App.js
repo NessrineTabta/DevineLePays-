@@ -4,6 +4,7 @@ import { auth } from './Backend/Firebase'; // Update with correct path
 
 import Authentification from './Composants/Authentification'; // Ensure this is the correct path
 import Jeu from './Composants/Jeu';
+import Profile from './Composants/Profile'; // ✅ Added Profile Page Import
 
 const AuthContext = createContext();
 
@@ -41,9 +42,12 @@ const Navbar = () => {
         {!currentUser ? (
           <li><Link className="navbar-item" to="/auth">Se connecter / S'inscrire</Link></li>
         ) : (
-          <li>
-            <button className="navbar-item" onClick={handleLogout}>Se déconnecter</button>
-          </li>
+          <>
+            <li><Link className="navbar-item" to="/profile">Profil</Link></li> {/* ✅ Added Profile Link */}
+            <li>
+              <button className="navbar-item" onClick={handleLogout}>Se déconnecter</button>
+            </li>
+          </>
         )}
       </ul>
     </nav>
@@ -53,8 +57,8 @@ const Navbar = () => {
 const ProtectedRoute = ({ children }) => {
   const { currentUser } = useAuth();
   
-  if (currentUser) {
-    return <Navigate to="/" />; // Redirect to home if user is logged in
+  if (!currentUser) {
+    return <Navigate to="/auth" />; // Redirect to auth if user is not logged in
   }
 
   return children;
@@ -75,6 +79,14 @@ function App() {
             } 
           />
           <Route path="/" element={<Jeu />} />
+          <Route 
+            path="/profile" 
+            element={
+              <ProtectedRoute> 
+                <Profile /> 
+              </ProtectedRoute>
+            } 
+          /> {/* ✅ Protected Profile Page */}
         </Routes>
       </Router>
     </AuthProvider>
