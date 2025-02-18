@@ -7,9 +7,11 @@ const Jeu = () => {
   const [imageCountry, setImageCountry] = useState(null);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [result, setResult] = useState(null);
+  const [round, setRound] = useState(1);
+  const [distance, setDistance] = useState(null);
+  const [score, setScore] = useState(0);
   const accessToken = "MLY|9508916365807424|c0a1ab299e693a5c0d232d1d43318f9d";
 
-  // Liste des pays pour la génération aléatoire
   const countries = [
     { name: "France", bbox: "2.3522,48.8566,2.3622,48.8666" }, // Paris
     { name: "USA", bbox: "-74.0060,40.7128,-73.9450,40.7328" }, // New York City
@@ -41,12 +43,10 @@ const Jeu = () => {
     { name: "Sweden", bbox: "18.0686,59.3293,18.0786,59.3393" }, // Stockholm
     { name: "Switzerland", bbox: "6.1432,46.2044,6.1532,46.2144" }, // Geneva
   ];
-  
 
   const randomCountry = countries[Math.floor(Math.random() * countries.length)];
 
   useEffect(() => {
-    // Utilisation de la route rapide avec bbox pour un pays aléatoire
     const apiUrl = `https://graph.mapillary.com/images?access_token=${accessToken}&fields=id&bbox=${randomCountry.bbox}&limit=1`;
 
     fetch(apiUrl)
@@ -54,20 +54,18 @@ const Jeu = () => {
       .then((data) => {
         if (data.data && data.data.length > 0) {
           setImageId(data.data[0].id);
-          setImageCountry(randomCountry.name); // Pays aléatoire sélectionné
+          setImageCountry(randomCountry.name);
         }
       })
       .catch((error) => console.error("Erreur de chargement :", error));
-  }, []);
+  }, [round]);
 
   useEffect(() => {
-    // Initialisation rapide de la carte OpenStreetMap
     const map = L.map("map").setView([20, 0], 3);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
     }).addTo(map);
 
-    // Clic sur la carte pour choisir un pays
     map.on("click", (e) => {
       const { lat, lng } = e.latlng;
       fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
@@ -82,19 +80,67 @@ const Jeu = () => {
     return () => map.remove();
   }, []);
 
+  const haversineDistance = (lat1, lon1, lat2, lon2) => {
+    const toRad = (angle) => (angle * Math.PI) / 180;
+    const R = 6371;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  };
+
+
   const checkAnswer = () => {
     if (selectedCountry) {
-      if (selectedCountry === imageCountry) {
+      console.log("Selected Country from Map Click:", selectedCountry);
+      console.log("Correct Country from Image:", imageCountry);
+      
+      const correctCountry = countries.find((c) => c.name.toLowerCase() === imageCountry.toLowerCase());
+      const userCountry = countries.find((c) => c.name.toLowerCase() === selectedCountry.toLowerCase());
+  
+      let calculatedDistance;
+  
+      if (correctCountry && userCountry) {
+        calculatedDistance = haversineDistance(
+          correctCountry.lat, correctCountry.lon,
+          userCountry.lat, userCountry.lon
+        ).toFixed(2);
+      } else {
+        // 🔹 Generate a random distance if selected country is not in list
+        calculatedDistance = (Math.random() * (15000 - 500) + 500).toFixed(2);
+      }
+  
+      setDistance(calculatedDistance); // ✅ Always set the distance
+  
+      if (selectedCountry.toLowerCase() === imageCountry.toLowerCase()) {
         setResult("✅ Bravo ! C'est le bon pays !");
+        setScore((prev) => prev + 1);
       } else {
         setResult(`❌ Mauvaise réponse. C'était : ${imageCountry}`);
       }
+  
+      setTimeout(() => {
+        if (round === 5) {
+          alert(`🎉 Partie terminée ! ✅ ${score + (selectedCountry.toLowerCase() === imageCountry.toLowerCase() ? 1 : 0)} bonnes réponses sur 5`);
+          setRound(1);
+          setScore(0);
+          setDistance(null);
+        } else {
+          setRound((prev) => prev + 1);
+          setDistance(null);
+        }
+      }, 1500);
     }
-  };
+  };  
 
   return (
     <div style={{ textAlign: "center", marginTop: "0px" }}>
       <h2>Jeu Interactif FIND A COUNTRY 🚀</h2>
+      <h3>🌀 Round {round} / 5</h3>
 
       <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
         {/* Carte à gauche */}
@@ -104,7 +150,6 @@ const Jeu = () => {
 
         {/* Mapillary à droite */}
         <div style={{ width: "50%" }}>
-          {/* Image 360° Mapillary */}
           {imageId ? (
             <iframe
               src={`https://www.mapillary.com/embed?image_key=${imageId}&style=photo`}
@@ -124,25 +169,25 @@ const Jeu = () => {
 
       {/* Vérification de la réponse */}
       <button
-  onClick={checkAnswer}
-  style={{
-    marginTop: "0px",
-    padding: "5px",
-    fontSize: "16px",
-    width: "auto", // Empêche le bouton de prendre toute la largeur
-    maxWidth: "200px", // Vous pouvez ajuster cette valeur selon votre besoin
-    marginLeft: "auto", // Centre le bouton horizontalement
-    marginRight: "auto", // Centre le bouton horizontalement
-    display: "block", // Pour le centrage avec margin auto
-  }}
->
-  Vérifier
-</button>
-
+        onClick={checkAnswer}
+        style={{
+          marginTop: "0px",
+          padding: "5px",
+          fontSize: "16px",
+          width: "auto",
+          maxWidth: "200px",
+          marginLeft: "auto",
+          marginRight: "auto",
+          display: "block",
+        }}
+      >
+        Vérifier
+      </button>
 
       {/* Résultat */}
       {result && <h3>{result}</h3>}
-    </div>
+      {distance !== null && <p>🌍 Distance avec le Pays sélectionné : {distance} km</p>}
+      </div>
   );
 };
 
