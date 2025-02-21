@@ -28,16 +28,24 @@ const Navbar = () => {
   const { currentUser } = useAuth();
 
   return (
-    <nav className="navbar-menu">
-      <ul className="navbar-start">
-        <li><Link className="navbar-item" to="/">Accueil</Link></li>
+    <nav className="navbar-menu" style={{ padding: '10px', backgroundColor: '#333' }}>
+      <ul className="navbar-start" style={{ display: 'flex', listStyle: 'none', margin: 0, padding: 0 }}>
+        <li><Link className="navbar-item" to="/" style={{ color: 'white', textDecoration: 'none', marginRight: '20px' }}>Accueil</Link></li>
         {!currentUser ? (
-          <li><Link className="navbar-item" to="/auth">Se connecter / S'inscrire</Link></li>
+          <li><Link className="navbar-item" to="/auth" style={{ color: 'white', textDecoration: 'none' }}>Se connecter / S'inscrire</Link></li>
         ) : (
           <>
-            <li><Link className="navbar-item" to="/profile">Profil</Link></li>
+            <li style={{ marginRight: '20px' }}>
+              <Link className="navbar-item" to="/profile" style={{ color: 'white', textDecoration: 'none' }}>Profil</Link>
+            </li>
             <li>
-              <button className="navbar-item" onClick={() => auth.signOut()}>Se déconnecter</button>
+              <button 
+                className="navbar-item" 
+                onClick={() => auth.signOut()} 
+                style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
+              >
+                Se déconnecter
+              </button>
             </li>
           </>
         )}
